@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<ruleset name="OD Chotto Benri">
+	<description>OD ちょっと便利用の WordPress コーディング規約。</description>
+
+	<file>od-chotto-benri.php</file>
+
+	<exclude-pattern>/node_modules/*</exclude-pattern>
+	<exclude-pattern>/vendor/*</exclude-pattern>
+
+	<arg name="basepath" value="."/>
+	<arg name="colors"/>
+	<arg name="extensions" value="php"/>
+	<arg value="sp"/>
+
+	<rule ref="WordPress"/>
+
+	<rule ref="WordPress.WP.I18n">
+		<properties>
+			<property name="text_domain" type="array">
+				<element value="od-chotto-benri"/>
+			</property>
+		</properties>
+	</rule>
+
+	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
+		<properties>
+			<property name="prefixes" type="array">
+				<element value="od_chotto_benri"/>
+				<element value="OD_CHOTTO_BENRI"/>
+			</property>
+		</properties>
+	</rule>
+</ruleset>
