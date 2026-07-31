@@ -66,3 +66,30 @@ composer format
 ```
 
 `composer format` は PHP ファイルを書き換えるため、変更内容を確認してから実行してください。
+
+## プラグインの更新
+
+プラグインの更新には
+[inc2734/wp-github-plugin-updater](https://github.com/inc2734/wp-github-plugin-updater)
+を使用します。WordPress は `Olein-jp/od-chotto-benri` の最新 GitHub Release を確認し、
+新しいバージョンがある場合は管理画面の「プラグイン」から更新できます。
+
+### リリース方法
+
+1. `od-chotto-benri.php` の `Version` と `OD_CHOTTO_BENRI_VERSION` を更新します。
+2. 変更をコミットします。
+3. バージョンと同じタグ（例: `0.2.0`）を作成して GitHub へプッシュします。
+
+タグがプッシュされると GitHub Actions が本番用の Composer 依存をインストールし、
+`vendor` ディレクトリを含む `od-chotto-benri.zip` を作成して GitHub Release に添付します。
+管理画面からの更新には、この Release の ZIP が使用されます。
+
+Release は `*.*.*` 形式のタグを対象とします。先頭に `v` を付けることもできます。
+タグのバージョン、プラグインヘッダーの `Version`、`OD_CHOTTO_BENRI_VERSION` が
+一致しない場合は、誤ったパッケージを公開しないように処理を停止します。
+
+配布 ZIP にはプラグイン本体、README、実行に必要なファイル、本番用の `vendor` を含めます。
+開発環境、GitHub Actions の設定、Node.js 関連ファイル、Composer の定義ファイルなどは
+`.distignore` に従って除外します。
+
+ローカルで動作確認する場合は、あらかじめ `composer install` を実行してください。

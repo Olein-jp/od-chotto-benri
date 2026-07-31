@@ -5,6 +5,7 @@
  * Version:           0.1.0
  * Requires at least: 6.5
  * Requires PHP:      7.4
+ * Update URI:        https://github.com/Olein-jp/od-chotto-benri
  * Author:            Olein Design
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
@@ -19,3 +20,22 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 define( 'OD_CHOTTO_BENRI_VERSION', '0.1.0' );
 define( 'OD_CHOTTO_BENRI_FILE', __FILE__ );
+
+$od_chotto_benri_autoload = __DIR__ . '/vendor/autoload.php';
+
+if ( file_exists( $od_chotto_benri_autoload ) ) {
+	require_once $od_chotto_benri_autoload;
+}
+
+if ( class_exists( '\Inc2734\WP_GitHub_Plugin_Updater\Bootstrap' ) ) {
+	new \Inc2734\WP_GitHub_Plugin_Updater\Bootstrap(
+		plugin_basename( OD_CHOTTO_BENRI_FILE ),
+		'Olein-jp',
+		'od-chotto-benri',
+		array(
+			'homepage'     => 'https://github.com/Olein-jp/od-chotto-benri',
+			'requires'     => '6.5',
+			'requires_php' => '7.4',
+		)
+	);
+}

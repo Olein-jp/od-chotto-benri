@@ -1,0 +1,56 @@
+name: Create plugin release
+
+on:
+  push:
+    tags:
+      - '*.*.*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'
+          tools: composer:v2
+          coverage: none
+
+      - name: Install production dependencies
+        run: composer install --no-dev --prefer-dist --no-interaction --optimize-autoloader
+
+      - name: Validate release version
+        shell: bash
+        run: |
+          plugin_version="$(awk '$2 == "Version:" { print $3; exit }' od-chotto-benri.php)"
+          constant_version="$(awk -F"'" '/OD_CHOTTO_BENRI_VERSION/ { print $4; exit }' od-chotto-benri.php)"
+          tag_version="${GITHUB_REF_NAME#v}"
+
+          if [[ -z "${plugin_version}" || "${plugin_version}" != "${constant_version}" || "${plugin_version}" != "${tag_version}" ]]; then
+            echo "::error::Tag (${GITHUB_REF_NAME}), plugin header (${plugin_version}), and version constant (${constant_version}) must match."
+            exit 1
+          fi
+
+      - name: Build plugin ZIP
+        shell: bash
+        run: |
+          mkdir -p dist/od-chotto-benri
+          rsync -a --exclude-from='.distignore' ./ dist/od-chotto-benri/
+          cd dist
+          zip -qr od-chotto-benri.zip od-chotto-benri
+          unzip -tq od-chotto-benri.zip
+          test -f od-chotto-benri/od-chotto-benri.php
+          test -f od-chotto-benri/vendor/autoload.php
+          test ! -e od-chotto-benri/composer.json
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "${GITHUB_REF_NAME}" dist/od-chotto-benri.zip --generate-notes --verify-tag
