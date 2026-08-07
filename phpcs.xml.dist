@@ -2,7 +2,7 @@
 <ruleset name="OD Chotto Benri">
 	<description>OD ちょっと便利用の WordPress コーディング規約。</description>
 
-	<file>od-chotto-benri.php</file>
+	<file>.</file>
 
 	<exclude-pattern>/node_modules/*</exclude-pattern>
 	<exclude-pattern>/vendor/*</exclude-pattern>

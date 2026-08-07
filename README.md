@@ -17,6 +17,32 @@ WordPress に、自分で使うための「ちょっと便利」な機能を追�
 
 新しい機能を追加した場合も同じ設定画面に項目を追加し、初期状態はオンとします。
 
+## 利用できる機能
+
+### 条件付き更新日
+
+ブロックエディターのインサーターに、グループブロックのバリエーション
+「条件付き更新日」を追加します。このバリエーションには「更新：」ラベルと更新日が入り、
+投稿日と更新日が同じ日付の場合はフロントエンドに出力されません。
+
+個別投稿テンプレートなど、更新日を表示したい場所へ「条件付き更新日」を配置してください。
+通常のグループブロックには影響しません。
+
+## ソースコードの構成
+
+```text
+od-chotto-benri.php                         プラグインの起動処理
+includes/class-od-chotto-benri-plugin.php           共通サービスと機能の登録
+includes/class-od-chotto-benri-feature-registry.php 機能の一覧管理と起動
+includes/class-od-chotto-benri-settings.php         共通の設定画面と有効・無効判定
+includes/features/<feature>/               機能ごとの PHP 実装
+assets/js/<feature>.js                     機能ごとのエディター用スクリプト
+```
+
+新しい機能は他の機能へ直接依存させず、機能別ディレクトリ内に実装します。
+`OD_Chotto_Benri_Plugin::boot()` でメタデータと起動コールバックをレジストリへ登録すると、
+共通設定画面へ自動的に項目が追加されます。
+
 ## データの保存場所
 
 プラグインの設定値は WordPress の Options API を使い、`wp_options` テーブルの
