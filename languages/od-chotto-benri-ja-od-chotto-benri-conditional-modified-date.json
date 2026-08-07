@@ -1,0 +1,24 @@
+{
+	"translation-revision-date": "2026-08-07 10:00+0900",
+	"generator": "OD Chotto Benri",
+	"source": "assets/js/conditional-modified-date.js",
+	"domain": "messages",
+	"locale_data": {
+		"messages": {
+			"": {
+				"domain": "messages",
+				"lang": "ja",
+				"plural-forms": "nplurals=1; plural=0;"
+			},
+			"Conditional modified date": [
+				"条件付き更新日"
+			],
+			"Display the modified date only when it differs from the published date.": [
+				"投稿日と更新日が異なる日付の場合だけ更新日を表示します。"
+			],
+			"Updated:": [
+				"更新："
+			]
+		}
+	}
+}

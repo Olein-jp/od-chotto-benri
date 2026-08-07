@@ -36,7 +36,7 @@ final class OD_Chotto_Benri_Conditional_Modified_Date_Feature {
 	 * @return string
 	 */
 	public function get_label() {
-		return __( '条件付き更新日', 'od-chotto-benri' );
+		return __( 'Conditional modified date', 'od-chotto-benri' );
 	}
 
 	/**
@@ -45,7 +45,7 @@ final class OD_Chotto_Benri_Conditional_Modified_Date_Feature {
 	 * @return string
 	 */
 	public function get_description() {
-		return __( '投稿日と更新日が異なる日付の場合だけ更新日を表示します。', 'od-chotto-benri' );
+		return __( 'Display the modified date only when it differs from the published date.', 'od-chotto-benri' );
 	}
 
 	/**
@@ -74,7 +74,11 @@ final class OD_Chotto_Benri_Conditional_Modified_Date_Feature {
 			true
 		);
 
-		wp_set_script_translations( $handle, 'od-chotto-benri' );
+		wp_set_script_translations(
+			$handle,
+			'od-chotto-benri',
+			OD_CHOTTO_BENRI_PATH . 'languages'
+		);
 	}
 
 	/**

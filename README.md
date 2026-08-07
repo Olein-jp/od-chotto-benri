@@ -37,11 +37,28 @@ includes/class-od-chotto-benri-feature-registry.php 機能の一覧管理と起�
 includes/class-od-chotto-benri-settings.php         共通の設定画面と有効・無効判定
 includes/features/<feature>/               機能ごとの PHP 実装
 assets/js/<feature>.js                     機能ごとのエディター用スクリプト
+languages/                                 PHP・JavaScript用の翻訳ファイル
 ```
 
 新しい機能は他の機能へ直接依存させず、機能別ディレクトリ内に実装します。
 `OD_Chotto_Benri_Plugin::boot()` でメタデータと起動コールバックをレジストリへ登録すると、
 共通設定画面へ自動的に項目が追加されます。
+
+## 翻訳
+
+コード内の翻訳対象文字列は英語を原文とし、日本語訳は `languages/` に保存します。
+プラグイン名はロケールにかかわらず `OD Chotto Benri` と表示します。
+
+- `od-chotto-benri.pot`: 翻訳テンプレート
+- `od-chotto-benri-ja.po` / `.mo`: PHPで使用する日本語訳
+- `od-chotto-benri-ja-<script-handle>.json`: JavaScriptで使用する日本語訳
+
+`.po` を変更した場合は、次のコマンドで `.mo` を更新します。
+
+```sh
+msgfmt --check languages/od-chotto-benri-ja.po \
+  -o languages/od-chotto-benri-ja.mo
+```
 
 ## データの保存場所
 

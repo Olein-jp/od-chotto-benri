@@ -17,9 +17,9 @@
 
 		blocks.registerBlockVariation( 'core/group', {
 			name: variationName,
-			title: i18n.__( '条件付き更新日', 'od-chotto-benri' ),
+			title: i18n.__( 'Conditional modified date', 'od-chotto-benri' ),
 			description: i18n.__(
-				'投稿日と更新日が異なる日付の場合だけ更新日を表示します。',
+				'Display the modified date only when it differs from the published date.',
 				'od-chotto-benri'
 			),
 			icon: 'calendar-alt',
@@ -34,7 +34,7 @@
 				[
 					'core/paragraph',
 					{
-						content: i18n.__( '更新：', 'od-chotto-benri' ),
+						content: i18n.__( 'Updated:', 'od-chotto-benri' ),
 					},
 				],
 				[

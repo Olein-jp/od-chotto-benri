@@ -90,7 +90,7 @@ final class OD_Chotto_Benri_Settings {
 
 		add_settings_section(
 			'od_chotto_benri_features',
-			__( '利用する機能', 'od-chotto-benri' ),
+			__( 'Features to use', 'od-chotto-benri' ),
 			array( $this, 'render_section' ),
 			self::PAGE_SLUG
 		);
@@ -134,8 +134,8 @@ final class OD_Chotto_Benri_Settings {
 	 */
 	public function add_settings_page() {
 		add_options_page(
-			__( 'OD ちょっと便利', 'od-chotto-benri' ),
-			__( 'OD ちょっと便利', 'od-chotto-benri' ),
+			__( 'OD Chotto Benri', 'od-chotto-benri' ),
+			__( 'OD Chotto Benri', 'od-chotto-benri' ),
 			'manage_options',
 			self::PAGE_SLUG,
 			array( $this, 'render_page' )
@@ -148,7 +148,7 @@ final class OD_Chotto_Benri_Settings {
 	 * @return void
 	 */
 	public function render_section() {
-		echo '<p>' . esc_html__( '使用する機能を選択してください。新しく追加された機能は初期状態で有効になります。', 'od-chotto-benri' ) . '</p>';
+		echo '<p>' . esc_html__( 'Select the features you want to use. Newly added features are enabled by default.', 'od-chotto-benri' ) . '</p>';
 	}
 
 	/**

@@ -20,6 +20,12 @@ final class OD_Chotto_Benri_Plugin {
 	 * @return void
 	 */
 	public static function boot() {
+		load_plugin_textdomain(
+			'od-chotto-benri',
+			false,
+			dirname( plugin_basename( OD_CHOTTO_BENRI_FILE ) ) . '/languages'
+		);
+
 		$registry = new OD_Chotto_Benri_Feature_Registry();
 		$feature  = new OD_Chotto_Benri_Conditional_Modified_Date_Feature();
 
