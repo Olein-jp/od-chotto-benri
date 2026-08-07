@@ -64,16 +64,16 @@
         },
         {
             "name": "inc2734/wp-github-plugin-updater",
-            "version": "3.1.16",
+            "version": "3.1.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/inc2734/wp-github-plugin-updater.git",
-                "reference": "412ce8dcd4f6ab264fd4ad9fe590147323c41d55"
+                "reference": "697604eec2ccfebf3cde87afb3836ab892f889f3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/inc2734/wp-github-plugin-updater/zipball/412ce8dcd4f6ab264fd4ad9fe590147323c41d55",
-                "reference": "412ce8dcd4f6ab264fd4ad9fe590147323c41d55",
+                "url": "https://api.github.com/repos/inc2734/wp-github-plugin-updater/zipball/697604eec2ccfebf3cde87afb3836ab892f889f3",
+                "reference": "697604eec2ccfebf3cde87afb3836ab892f889f3",
                 "shasum": ""
             },
             "require": {
@@ -105,9 +105,9 @@
             "description": "A library for WordPress that automatic plugin updater with GitHub API.",
             "support": {
                 "issues": "https://github.com/inc2734/wp-github-plugin-updater/issues",
-                "source": "https://github.com/inc2734/wp-github-plugin-updater/tree/3.1.16"
+                "source": "https://github.com/inc2734/wp-github-plugin-updater/tree/3.1.17"
             },
-            "time": "2025-03-31T10:54:25+00:00"
+            "time": "2026-08-03T02:14:44+00:00"
         }
     ],
     "packages-dev": [
@@ -384,16 +384,16 @@
         },
         {
             "name": "squizlabs/php_codesniffer",
-            "version": "3.13.5",
+            "version": "3.13.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPCSStandards/PHP_CodeSniffer.git",
-                "reference": "0ca86845ce43291e8f5692c7356fccf3bcf02bf4"
+                "reference": "4c378e1a528ea066890fc2397cbdd2f94eb2fc91"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPCSStandards/PHP_CodeSniffer/zipball/0ca86845ce43291e8f5692c7356fccf3bcf02bf4",
-                "reference": "0ca86845ce43291e8f5692c7356fccf3bcf02bf4",
+                "url": "https://api.github.com/repos/PHPCSStandards/PHP_CodeSniffer/zipball/4c378e1a528ea066890fc2397cbdd2f94eb2fc91",
+                "reference": "4c378e1a528ea066890fc2397cbdd2f94eb2fc91",
                 "shasum": ""
             },
             "require": {
@@ -459,7 +459,7 @@
                     "type": "thanks_dev"
                 }
             ],
-            "time": "2025-11-04T16:30:35+00:00"
+            "time": "2026-08-06T00:17:32+00:00"
         },
         {
             "name": "wp-coding-standards/wpcs",
