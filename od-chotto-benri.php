@@ -2,8 +2,9 @@
 /**
  * Plugin Name:       OD Chotto Benri
  * Description:       A collection of small features that make WordPress a little more convenient.
- * Version:           0.2.0
+ * Version:           0.2.1
  * Requires at least: 6.5
+ * Tested up to:      7.1
  * Requires PHP:      7.4
  * Update URI:        https://github.com/Olein-jp/od-chotto-benri
  * Author:            Koji Kuno
@@ -20,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'OD_CHOTTO_BENRI_VERSION', '0.2.0' );
+define( 'OD_CHOTTO_BENRI_VERSION', '0.2.1' );
 define( 'OD_CHOTTO_BENRI_FILE', __FILE__ );
 define( 'OD_CHOTTO_BENRI_PATH', plugin_dir_path( __FILE__ ) );
 define( 'OD_CHOTTO_BENRI_URL', plugin_dir_url( __FILE__ ) );
@@ -39,6 +40,7 @@ if ( class_exists( '\Inc2734\WP_GitHub_Plugin_Updater\Bootstrap' ) ) {
 		array(
 			'homepage'     => 'https://github.com/Olein-jp/od-chotto-benri',
 			'requires'     => '6.5',
+			'tested'       => '7.1',
 			'requires_php' => '7.4',
 		)
 	);
