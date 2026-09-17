@@ -1,18 +1,31 @@
 {
 	"name": "od-chotto-benri",
-	"version": "0.2.1",
+	"version": "0.3.0",
 	"private": true,
 	"description": "OD ちょっと便利のローカル開発環境",
 	"license": "GPL-2.0-or-later",
 	"scripts": {
+		"build": "wp-scripts build",
 		"env:start": "wp-env start",
 		"env:stop": "wp-env stop",
 		"env:status": "wp-env status",
 		"env:logs": "wp-env logs",
 		"env:cli": "wp-env run cli wp",
-		"lint:php": "composer lint"
+		"format": "wp-scripts format",
+		"lint:js": "wp-scripts lint-js src tests",
+		"lint:php": "composer lint",
+		"start": "wp-scripts start",
+		"test:unit": "wp-scripts test-unit-js"
 	},
 	"devDependencies": {
-		"@wordpress/env": "^11.12.0"
+		"@wordpress/block-editor": "^17.1.0",
+		"@wordpress/components": "^40.1.0",
+		"@wordpress/element": "^8.7.0",
+		"@wordpress/env": "^11.12.0",
+		"@wordpress/i18n": "^6.28.0",
+		"@wordpress/icons": "^16.0.0",
+		"@wordpress/rich-text": "^7.55.0",
+		"@wordpress/scripts": "^31.3.0",
+		"typescript": "^5.9.3"
 	}
 }

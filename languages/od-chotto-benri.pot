@@ -2,7 +2,7 @@
 # This file is distributed under the GPL-2.0-or-later license.
 msgid ""
 msgstr ""
-"Project-Id-Version: OD Chotto Benri 0.2.0\n"
+"Project-Id-Version: OD Chotto Benri 0.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/Olein-jp/od-chotto-benri/issues\n"
 "POT-Creation-Date: 2026-08-07 10:00+0900\n"
 "MIME-Version: 1.0\n"
@@ -40,4 +40,108 @@ msgstr ""
 
 #: assets/js/conditional-modified-date.js
 msgid "Updated:"
+msgstr ""
+
+#: includes/features/inline-attributes/class-od-chotto-benri-inline-attributes-feature.php
+msgid "RichText inline attributes"
+msgstr ""
+
+#: includes/features/inline-attributes/class-od-chotto-benri-inline-attributes-feature.php
+msgid "Add CSS classes, accessibility attributes, and language metadata to selected RichText."
+msgstr ""
+
+#: src/edit.js src/index.js
+msgid "Inline attributes"
+msgstr ""
+
+#: src/edit.js
+msgid "CSS classes"
+msgstr ""
+
+#: src/edit.js
+msgid "Separate multiple classes with spaces."
+msgstr ""
+
+#: src/edit.js
+msgid "Enter valid CSS class names separated by spaces."
+msgstr ""
+
+#: src/edit.js
+msgid "Accessibility"
+msgstr ""
+
+#: src/edit.js
+msgid "Hide from assistive technologies"
+msgstr ""
+
+#: src/edit.js
+msgid "Use this for decorative text that does not need to be announced."
+msgstr ""
+
+#: src/edit.js
+msgid "Accessible label"
+msgstr ""
+
+#: src/edit.js
+msgid "Language"
+msgstr ""
+
+#: src/edit.js
+msgid "Remove"
+msgstr ""
+
+#: src/edit.js
+msgid "Cancel"
+msgstr ""
+
+#: src/edit.js
+msgid "Apply"
+msgstr ""
+
+#: src/edit.js
+msgid "Set inline attributes on the selected text"
+msgstr ""
+
+#: src/languages.js
+msgid "Not specified"
+msgstr ""
+
+#: src/languages.js
+msgid "Japanese — ja"
+msgstr ""
+
+#: src/languages.js
+msgid "English — en"
+msgstr ""
+
+#: src/languages.js
+msgid "Chinese (Simplified) — zh-Hans"
+msgstr ""
+
+#: src/languages.js
+msgid "Chinese (Traditional) — zh-Hant"
+msgstr ""
+
+#: src/languages.js
+msgid "Korean — ko"
+msgstr ""
+
+#: src/languages.js
+msgid "French — fr"
+msgstr ""
+
+#: src/languages.js
+msgid "German — de"
+msgstr ""
+
+#: src/languages.js
+msgid "Spanish — es"
+msgstr ""
+
+#: src/languages.js
+msgid "Italian — it"
+msgstr ""
+
+#: src/languages.js
+msgid "Portuguese — pt"
 msgstr ""

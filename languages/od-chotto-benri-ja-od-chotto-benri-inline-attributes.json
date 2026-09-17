@@ -1,0 +1,39 @@
+{
+	"translation-revision-date": "2026-09-17 00:00+0900",
+	"generator": "OD Chotto Benri",
+	"source": "src/index.js",
+	"domain": "messages",
+	"locale_data": {
+		"messages": {
+			"": {
+				"domain": "messages",
+				"lang": "ja",
+				"plural-forms": "nplurals=1; plural=0;"
+			},
+			"Inline attributes": [ "インライン属性" ],
+			"CSS classes": [ "CSSクラス" ],
+			"Separate multiple classes with spaces.": [ "複数のクラスは半角スペースで区切ります。" ],
+			"Enter valid CSS class names separated by spaces.": [ "有効なCSSクラス名を半角スペースで区切って入力してください。" ],
+			"Accessibility": [ "アクセシビリティ" ],
+			"Hide from assistive technologies": [ "支援技術から非表示" ],
+			"Use this for decorative text that does not need to be announced.": [ "装飾目的など、読み上げる必要のない文字に使用します。" ],
+			"Accessible label": [ "読み上げラベル" ],
+			"Language": [ "言語" ],
+			"Remove": [ "解除" ],
+			"Cancel": [ "キャンセル" ],
+			"Apply": [ "適用" ],
+			"Set inline attributes on the selected text": [ "選択した文字列にインライン属性を設定" ],
+			"Not specified": [ "未指定" ],
+			"Japanese — ja": [ "日本語 — ja" ],
+			"English — en": [ "英語 — en" ],
+			"Chinese (Simplified) — zh-Hans": [ "中国語（簡体字）— zh-Hans" ],
+			"Chinese (Traditional) — zh-Hant": [ "中国語（繁体字）— zh-Hant" ],
+			"Korean — ko": [ "韓国語 — ko" ],
+			"French — fr": [ "フランス語 — fr" ],
+			"German — de": [ "ドイツ語 — de" ],
+			"Spanish — es": [ "スペイン語 — es" ],
+			"Italian — it": [ "イタリア語 — it" ],
+			"Portuguese — pt": [ "ポルトガル語 — pt" ]
+		}
+	}
+}

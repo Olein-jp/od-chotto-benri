@@ -2,7 +2,7 @@
 # This file is distributed under the GPL-2.0-or-later license.
 msgid ""
 msgstr ""
-"Project-Id-Version: OD Chotto Benri 0.2.0\n"
+"Project-Id-Version: OD Chotto Benri 0.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/Olein-jp/od-chotto-benri/issues\n"
 "POT-Creation-Date: 2026-08-07 10:00+0900\n"
 "PO-Revision-Date: 2026-08-07 10:00+0900\n"
@@ -46,3 +46,107 @@ msgstr "投稿日と更新日が異なる日付の場合だけ更新日を表示
 #: assets/js/conditional-modified-date.js
 msgid "Updated:"
 msgstr "更新："
+
+#: includes/features/inline-attributes/class-od-chotto-benri-inline-attributes-feature.php
+msgid "RichText inline attributes"
+msgstr "RichTextインライン属性"
+
+#: includes/features/inline-attributes/class-od-chotto-benri-inline-attributes-feature.php
+msgid "Add CSS classes, accessibility attributes, and language metadata to selected RichText."
+msgstr "選択したRichTextにCSSクラス、アクセシビリティ属性、言語情報を追加します。"
+
+#: src/edit.js src/index.js
+msgid "Inline attributes"
+msgstr "インライン属性"
+
+#: src/edit.js
+msgid "CSS classes"
+msgstr "CSSクラス"
+
+#: src/edit.js
+msgid "Separate multiple classes with spaces."
+msgstr "複数のクラスは半角スペースで区切ります。"
+
+#: src/edit.js
+msgid "Enter valid CSS class names separated by spaces."
+msgstr "有効なCSSクラス名を半角スペースで区切って入力してください。"
+
+#: src/edit.js
+msgid "Accessibility"
+msgstr "アクセシビリティ"
+
+#: src/edit.js
+msgid "Hide from assistive technologies"
+msgstr "支援技術から非表示"
+
+#: src/edit.js
+msgid "Use this for decorative text that does not need to be announced."
+msgstr "装飾目的など、読み上げる必要のない文字に使用します。"
+
+#: src/edit.js
+msgid "Accessible label"
+msgstr "読み上げラベル"
+
+#: src/edit.js
+msgid "Language"
+msgstr "言語"
+
+#: src/edit.js
+msgid "Remove"
+msgstr "解除"
+
+#: src/edit.js
+msgid "Cancel"
+msgstr "キャンセル"
+
+#: src/edit.js
+msgid "Apply"
+msgstr "適用"
+
+#: src/edit.js
+msgid "Set inline attributes on the selected text"
+msgstr "選択した文字列にインライン属性を設定"
+
+#: src/languages.js
+msgid "Not specified"
+msgstr "未指定"
+
+#: src/languages.js
+msgid "Japanese — ja"
+msgstr "日本語 — ja"
+
+#: src/languages.js
+msgid "English — en"
+msgstr "英語 — en"
+
+#: src/languages.js
+msgid "Chinese (Simplified) — zh-Hans"
+msgstr "中国語（簡体字）— zh-Hans"
+
+#: src/languages.js
+msgid "Chinese (Traditional) — zh-Hant"
+msgstr "中国語（繁体字）— zh-Hant"
+
+#: src/languages.js
+msgid "Korean — ko"
+msgstr "韓国語 — ko"
+
+#: src/languages.js
+msgid "French — fr"
+msgstr "フランス語 — fr"
+
+#: src/languages.js
+msgid "German — de"
+msgstr "ドイツ語 — de"
+
+#: src/languages.js
+msgid "Spanish — es"
+msgstr "スペイン語 — es"
+
+#: src/languages.js
+msgid "Italian — it"
+msgstr "イタリア語 — it"
+
+#: src/languages.js
+msgid "Portuguese — pt"
+msgstr "ポルトガル語 — pt"

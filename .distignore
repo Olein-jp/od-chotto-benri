@@ -12,3 +12,5 @@
 /package.json
 /package-lock.json
 /phpcs.xml.dist
+/src
+/tests

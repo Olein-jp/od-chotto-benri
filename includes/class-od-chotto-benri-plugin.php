@@ -27,14 +27,19 @@ final class OD_Chotto_Benri_Plugin {
 		);
 
 		$registry = new OD_Chotto_Benri_Feature_Registry();
-		$feature  = new OD_Chotto_Benri_Conditional_Modified_Date_Feature();
-
-		$registry->register(
-			$feature->get_key(),
-			$feature->get_label(),
-			$feature->get_description(),
-			array( $feature, 'register_hooks' )
+		$features = array(
+			new OD_Chotto_Benri_Conditional_Modified_Date_Feature(),
+			new OD_Chotto_Benri_Inline_Attributes_Feature(),
 		);
+
+		foreach ( $features as $feature ) {
+			$registry->register(
+				$feature->get_key(),
+				$feature->get_label(),
+				$feature->get_description(),
+				array( $feature, 'register_hooks' )
+			);
+		}
 
 		$settings = new OD_Chotto_Benri_Settings( $registry );
 		$settings->register_hooks();
