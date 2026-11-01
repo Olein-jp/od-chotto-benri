@@ -1,0 +1,46 @@
+/* SVG 成功前は既存ボーダーを維持し、未設定時だけ outline を補う。 */
+.od-hdb-enabled:not(.od-hdb-ready) {
+	outline: var(--od-hdb-width, 2px) solid var(--od-hdb-color, currentColor);
+	outline-offset: -2px;
+}
+.od-hdb-enabled.od-hdb-has-border:not(.od-hdb-ready) {
+	outline: none;
+}
+.od-hdb-positioned {
+	position: relative;
+}
+.od-hdb-enabled.od-hdb-ready {
+	border-color: transparent !important;
+}
+.od-hdb-border {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	display: block;
+	pointer-events: none;
+	overflow: hidden;
+}
+.od-hdb-border path {
+	fill: none;
+	stroke: var(--od-hdb-color, currentColor);
+	stroke-width: var(--od-hdb-width, 2px);
+	stroke-linecap: round;
+	stroke-linejoin: round;
+	vector-effect: non-scaling-stroke;
+}
+.od-hdb-patterns {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 8px;
+	margin-bottom: 16px;
+}
+.od-hdb-patterns button {
+	height: auto;
+	flex-direction: column;
+	padding: 8px;
+}
+.od-hdb-patterns svg {
+	width: 88px;
+	height: 36px;
+}

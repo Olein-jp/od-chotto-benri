@@ -28,6 +28,7 @@
 			<property name="prefixes" type="array">
 				<element value="od_chotto_benri"/>
 				<element value="OD_CHOTTO_BENRI"/>
+				<element value="od_hdb"/>
 			</property>
 		</properties>
 	</rule>

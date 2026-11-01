@@ -150,3 +150,57 @@ msgstr "イタリア語 — it"
 #: src/languages.js
 msgid "Portuguese — pt"
 msgstr "ポルトガル語 — pt"
+
+msgid "Hand-drawn border"
+msgstr "手書き風ボーダー"
+
+msgid "Add hand-drawn SVG borders to container blocks."
+msgstr "コンテナーブロックに手書き風の SVG ボーダーを追加します。"
+
+msgid "Enable hand-drawn border"
+msgstr "手書き風ボーダーを有効にする"
+
+msgid "Natural"
+msgstr "ナチュラル"
+
+msgid "Rough"
+msgstr "ラフ"
+
+msgid "Rounded"
+msgstr "ラウンド"
+
+msgid "Sketch"
+msgstr "スケッチ"
+
+msgid "Wavy"
+msgstr "ウェーブ"
+
+msgid "Pattern"
+msgstr "パターン"
+
+msgid "Line color (clear to inherit)"
+msgstr "線の色（クリアすると継承）"
+
+msgid "Inherit line width"
+msgstr "線の太さを継承する"
+
+msgid "Line width (px)"
+msgstr "線の太さ（px）"
+
+msgid "Roughness"
+msgstr "揺らぎの強さ"
+
+msgid "Weak"
+msgstr "弱い"
+
+msgid "Normal"
+msgstr "標準"
+
+msgid "Strong"
+msgstr "強い"
+
+msgid "Regenerate pattern"
+msgstr "パターンを再生成"
+
+msgid "Dedicated settings override standard borders, then theme styles, then 2px/currentColor. Different edges use the top edge as a representative value."
+msgstr "専用設定、標準ボーダー、テーマの順に継承し、未設定時は 2px・文字色を使用します。四辺で異なる設定は上辺を代表値にします。"

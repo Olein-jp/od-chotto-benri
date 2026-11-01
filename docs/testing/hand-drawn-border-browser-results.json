@@ -1,0 +1,107 @@
+[
+  {
+    "browser": "chromium",
+    "postId": 33,
+    "duration": 33.10000038146973,
+    "count": 50,
+    "measurements": [
+      {
+        "quantity": 1,
+        "duration": 17.700000286102295,
+        "svgs": 1,
+        "observers": 1
+      },
+      {
+        "quantity": 10,
+        "duration": 33.19999980926514,
+        "svgs": 10,
+        "observers": 10
+      },
+      {
+        "quantity": 30,
+        "duration": 33.09999990463257,
+        "svgs": 30,
+        "observers": 30
+      },
+      {
+        "quantity": 50,
+        "duration": 33.10000038146973,
+        "svgs": 50,
+        "observers": 50
+      }
+    ],
+    "heapBytes": 3168614,
+    "resized": true,
+    "errors": []
+  },
+  {
+    "browser": "firefox",
+    "postId": 36,
+    "duration": 33,
+    "count": 50,
+    "measurements": [
+      {
+        "quantity": 1,
+        "duration": 30,
+        "svgs": 1,
+        "observers": 1
+      },
+      {
+        "quantity": 10,
+        "duration": 33,
+        "svgs": 10,
+        "observers": 10
+      },
+      {
+        "quantity": 30,
+        "duration": 33,
+        "svgs": 30,
+        "observers": 30
+      },
+      {
+        "quantity": 50,
+        "duration": 33,
+        "svgs": 50,
+        "observers": 50
+      }
+    ],
+    "heapBytes": null,
+    "resized": true,
+    "errors": []
+  },
+  {
+    "browser": "webkit",
+    "postId": 38,
+    "duration": 33,
+    "count": 50,
+    "measurements": [
+      {
+        "quantity": 1,
+        "duration": 18,
+        "svgs": 1,
+        "observers": 1
+      },
+      {
+        "quantity": 10,
+        "duration": 33,
+        "svgs": 10,
+        "observers": 10
+      },
+      {
+        "quantity": 30,
+        "duration": 33,
+        "svgs": 30,
+        "observers": 30
+      },
+      {
+        "quantity": 50,
+        "duration": 33,
+        "svgs": 50,
+        "observers": 50
+      }
+    ],
+    "heapBytes": null,
+    "resized": true,
+    "errors": []
+  }
+]

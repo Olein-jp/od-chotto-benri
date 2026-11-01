@@ -175,3 +175,88 @@ Release は `*.*.*` 形式のタグを対象とします。先頭に `v` を付�
 `.distignore` に従って除外します。
 
 ローカルで動作確認する場合は、あらかじめ `composer install` を実行してください。
+
+## 手書き風ボーダー
+
+「設定 → OD Chotto Benri」の「手書き風ボーダー」で、機能全体を ON/OFF にできます。
+既存の共通設定に登録しており、追加直後は ON です。各ブロックの装飾は初期状態では OFF です。
+機能を OFF にすると専用 UI・JavaScript・CSS は読み込まれません。保存済みの属性や本文、
+標準ボーダー設定は削除せず、再度 ON にすると復元できます。
+
+グループ・カラム・個別カラムを選び、設定サイドバーの「手書き風ボーダー」を開いて有効にします。
+ナチュラル・ラフ・ラウンド・スケッチ・ウェーブから選択でき、色、線幅（1〜8px、0.5px 刻み）、
+揺らぎ（弱い・標準・強い）、再生成を設定できます。色のクリアと線幅の継承にも対応します。
+テーマのパレットとカスタムカラー許可設定を利用し、プリセット色はスラッグとして保存します。
+
+色・太さは「専用の明示値 → 標準ボーダー属性 → 計算済みのテーマ CSS → 文字色・2px」の順です。
+四辺で異なる指定は上辺を代表値にします。専用設定以外の単位はブラウザーが計算した値へフォールバックします。
+SVG は装飾レイヤーで、線はボックス内側の最大 10px の領域に描きます。内容が枠に近い場合は
+ブロック標準の余白設定でパディングを加えてください。
+
+SVG が生成された場合だけ通常のボーダーを透明化し、元の太さとレイアウトを維持します。
+JavaScript が無効・失敗した場合は標準ボーダーを残し、ボーダー未設定時は outline を補います。
+outline は専用のフォールバックです。独自 CSS の枠線・outline・強いクリッピングとの併用は個別確認が必要です。
+
+### 対応ブロックを拡張する
+
+`od_hdb_supported_blocks` はブロック名の配列を受け取り、同じ配列を PHP とエディターで共有します。
+重複・不正名を除外し、空配列や配列以外の戻り値は全ブロック非対応として処理します。
+未登録名でもエラーにはなりません。最初のブロック登録時に一覧を確定するため、
+フィルターはプラグイン読み込み時、または `init` より前（テーマの `functions.php` など）に登録してください。
+
+```php
+add_filter( 'od_hdb_supported_blocks', function ( $blocks ) {
+    $blocks[] = 'my-plugin/custom-card';
+    return array_values( array_diff( $blocks, array( 'core/columns' ) ) );
+} );
+```
+
+完全に置き換える場合は任意の配列を返してください。
+複数ルート、独自のエディター DOM、再生成する DOM、特殊な要素を持つブロックは個別検証が必要です。
+公開側は WordPress HTML API で先頭のコンテナー要素に識別情報を追加します。
+独自 SVG ソースの入力や保存 HTML の変更は行いません。
+
+### 実装と検証
+
+- `includes/features/hand-drawn-border/`: 機能登録、共通属性定義、対応一覧、公開レンダリング。
+- `src/hand-drawn-border/`: 共通エンジン、設定解決、監視、エディターと公開画面の入口。
+- `assets/css/hand-drawn-border.css`: 装飾とフォールバック。
+- `build/hand-drawn-border-*`: 既存の wp-scripts による配布ファイル。
+- `tests/js/hand-drawn-border.test.js`: 5 パターン × 7 寸法、決定論、不正入力、色・太さ、50 要素と破棄。
+- `tests/php/hand-drawn-border.php`: WordPress 上の登録・拡張フック・保存属性・設定 ON/OFF の検証。
+
+```sh
+npm run build
+npm run test:unit -- --runInBand
+npm run lint:js
+composer lint
+npm run env:cli -- eval-file wp-content/plugins/od-chotto-benri/tests/php/hand-drawn-border.php
+```
+
+描画は各辺を実寸に応じて区切り、法線方向へ変位した Bézier 曲線で生成します。
+シードは有効化・再生成操作時だけ変更します。スケッチでは同じ乱数列から補助線を生成します。
+ResizeObserver と requestAnimationFrame で更新をまとめ、色・太さだけの更新ではパスを再生成しません。
+16px 未満の寸法は SVG を省略し、フォールバックを維持します。
+
+使用 API は `register_block_type_args`、`blocks.registerBlockType`、`editor.BlockEdit`、
+`editor.BlockListBlock`、`render_block`、`WP_HTML_Tag_Processor`、既存の Settings API です。
+コアのブロック登録前に属性フィルターを設定するため、プラグインの起動優先度を `init:0` にしています。
+
+今後の改善候補は、四辺個別設定、特殊なサードパーティーブロック向けの描画先指定、
+動的に追加された公開 DOM への対応、ブラウザー別の継続的な画像差分検証です。
+
+ブラウザー検証は、検証専用サイトを起動してから次のように実行します（下書きを作成し、機能設定を一時的に変更します）。
+
+```sh
+npx playwright install
+OD_HDB_URL=http://localhost:8888 npm run test:e2e:hdb
+```
+
+`OD_HDB_OUTPUT` で結果画像の保存先を変更でき、`OD_HDB_WRITE_BASELINES=1` を指定すると
+`tests/e2e/baselines/` の固定シード基準画像 35 枚を更新します。
+画像差分の自動判定は未導入です。実装内容と実施済み・未実施の検証は
+[検証レポート](docs/testing/hand-drawn-border.md) を参照してください。
+
+機能全体を OFF にしたまま再編集・保存しても設定を保持するため、属性定義の登録だけは継続します。
+専用 UI と描画用アセットは読み込みません。プラグインそのものを無効にしている間の再保存については、
+WordPress が未知のブロック属性を保持することまでは保証できません。無効化だけで既存の本文を書き換える処理はありません。

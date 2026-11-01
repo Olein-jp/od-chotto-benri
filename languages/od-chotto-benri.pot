@@ -145,3 +145,57 @@ msgstr ""
 #: src/languages.js
 msgid "Portuguese — pt"
 msgstr ""
+
+msgid "Hand-drawn border"
+msgstr ""
+
+msgid "Add hand-drawn SVG borders to container blocks."
+msgstr ""
+
+msgid "Enable hand-drawn border"
+msgstr ""
+
+msgid "Natural"
+msgstr ""
+
+msgid "Rough"
+msgstr ""
+
+msgid "Rounded"
+msgstr ""
+
+msgid "Sketch"
+msgstr ""
+
+msgid "Wavy"
+msgstr ""
+
+msgid "Pattern"
+msgstr ""
+
+msgid "Line color (clear to inherit)"
+msgstr ""
+
+msgid "Inherit line width"
+msgstr ""
+
+msgid "Line width (px)"
+msgstr ""
+
+msgid "Roughness"
+msgstr ""
+
+msgid "Weak"
+msgstr ""
+
+msgid "Normal"
+msgstr ""
+
+msgid "Strong"
+msgstr ""
+
+msgid "Regenerate pattern"
+msgstr ""
+
+msgid "Dedicated settings override standard borders, then theme styles, then 2px/currentColor. Different edges use the top edge as a representative value."
+msgstr ""

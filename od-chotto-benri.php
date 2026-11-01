@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       OD Chotto Benri
  * Description:       A collection of small features that make WordPress a little more convenient.
- * Version:           0.3.0
+ * Version:           0.4.0
  * Requires at least: 6.5
  * Tested up to:      7.1
  * Requires PHP:      7.4
@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'OD_CHOTTO_BENRI_VERSION', '0.3.0' );
+define( 'OD_CHOTTO_BENRI_VERSION', '0.4.0' );
 define( 'OD_CHOTTO_BENRI_FILE', __FILE__ );
 define( 'OD_CHOTTO_BENRI_PATH', plugin_dir_path( __FILE__ ) );
 define( 'OD_CHOTTO_BENRI_URL', plugin_dir_url( __FILE__ ) );
@@ -50,6 +50,7 @@ require_once OD_CHOTTO_BENRI_PATH . 'includes/class-od-chotto-benri-feature-regi
 require_once OD_CHOTTO_BENRI_PATH . 'includes/class-od-chotto-benri-settings.php';
 require_once OD_CHOTTO_BENRI_PATH . 'includes/features/conditional-modified-date/class-od-chotto-benri-conditional-modified-date-feature.php';
 require_once OD_CHOTTO_BENRI_PATH . 'includes/features/inline-attributes/class-od-chotto-benri-inline-attributes-feature.php';
+require_once OD_CHOTTO_BENRI_PATH . 'includes/features/hand-drawn-border/class-od-chotto-benri-hand-drawn-border-feature.php';
 require_once OD_CHOTTO_BENRI_PATH . 'includes/class-od-chotto-benri-plugin.php';
 
-add_action( 'init', array( 'OD_Chotto_Benri_Plugin', 'boot' ) );
+add_action( 'init', array( 'OD_Chotto_Benri_Plugin', 'boot' ), 0 );

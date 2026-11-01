@@ -26,10 +26,14 @@ final class OD_Chotto_Benri_Plugin {
 			dirname( plugin_basename( OD_CHOTTO_BENRI_FILE ) ) . '/languages'
 		);
 
+		// OFF 中の再保存でも既存のボーダー属性を保持する.
+		$hand_drawn_border = new OD_Chotto_Benri_Hand_Drawn_Border_Feature();
+		$hand_drawn_border->register_attribute_hooks();
 		$registry = new OD_Chotto_Benri_Feature_Registry();
 		$features = array(
 			new OD_Chotto_Benri_Conditional_Modified_Date_Feature(),
 			new OD_Chotto_Benri_Inline_Attributes_Feature(),
+			$hand_drawn_border,
 		);
 
 		foreach ( $features as $feature ) {

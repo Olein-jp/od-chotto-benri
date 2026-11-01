@@ -14,3 +14,4 @@
 /phpcs.xml.dist
 /src
 /tests
+/webpack.config.js

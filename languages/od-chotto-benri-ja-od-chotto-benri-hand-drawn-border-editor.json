@@ -1,0 +1,66 @@
+{
+	"domain": "od-chotto-benri",
+	"locale_data": {
+		"od-chotto-benri": {
+			"": {
+				"domain": "od-chotto-benri",
+				"lang": "ja",
+				"plural-forms": "nplurals=1; plural=0;"
+			},
+			"Hand-drawn border": [
+				"手書き風ボーダー"
+			],
+			"Add hand-drawn SVG borders to container blocks.": [
+				"コンテナーブロックに手書き風の SVG ボーダーを追加します。"
+			],
+			"Enable hand-drawn border": [
+				"手書き風ボーダーを有効にする"
+			],
+			"Natural": [
+				"ナチュラル"
+			],
+			"Rough": [
+				"ラフ"
+			],
+			"Rounded": [
+				"ラウンド"
+			],
+			"Sketch": [
+				"スケッチ"
+			],
+			"Wavy": [
+				"ウェーブ"
+			],
+			"Pattern": [
+				"パターン"
+			],
+			"Line color (clear to inherit)": [
+				"線の色（クリアすると継承）"
+			],
+			"Inherit line width": [
+				"線の太さを継承する"
+			],
+			"Line width (px)": [
+				"線の太さ（px）"
+			],
+			"Roughness": [
+				"揺らぎの強さ"
+			],
+			"Weak": [
+				"弱い"
+			],
+			"Normal": [
+				"標準"
+			],
+			"Strong": [
+				"強い"
+			],
+			"Regenerate pattern": [
+				"パターンを再生成"
+			],
+			"Dedicated settings override standard borders, then theme styles, then 2px/currentColor. Different edges use the top edge as a representative value.": [
+				"専用設定、標準ボーダー、テーマの順に継承し、未設定時は 2px・文字色を使用します。四辺で異なる設定は上辺を代表値にします。"
+			]
+		}
+	}
+}
