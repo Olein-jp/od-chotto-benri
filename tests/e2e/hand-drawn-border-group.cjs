@@ -21,13 +21,35 @@ async function measure( frame, selector ) {
 			const svg = element.querySelector( ':scope > svg.od-hdb-border' );
 			const layer = svg?.getBoundingClientRect();
 			const css = svg && window.getComputedStyle( svg );
+			const path = svg?.querySelector( 'path' );
+			const pathBounds = path?.getBBox();
+			const thickness = path
+				? parseFloat( window.getComputedStyle( path ).strokeWidth )
+				: 0;
 			return {
 				width: rect.width,
 				height: rect.height,
-				offsetX: layer ? layer.x - rect.x - element.clientLeft : null,
-				offsetY: layer ? layer.y - rect.y - element.clientTop : null,
-				widthError: layer ? layer.width - element.clientWidth : null,
-				heightError: layer ? layer.height - element.clientHeight : null,
+				offsetX: layer ? layer.x - rect.x : null,
+				offsetY: layer ? layer.y - rect.y : null,
+				widthError: layer ? layer.width - rect.width : null,
+				heightError: layer ? layer.height - rect.height : null,
+				edgeGaps:
+					pathBounds && layer
+						? [
+								layer.x - rect.x + pathBounds.x - thickness / 2,
+								layer.y - rect.y + pathBounds.y - thickness / 2,
+								rect.right -
+									( layer.x +
+										pathBounds.x +
+										pathBounds.width +
+										thickness / 2 ),
+								rect.bottom -
+									( layer.y +
+										pathBounds.y +
+										pathBounds.height +
+										thickness / 2 ),
+						  ]
+						: [],
 				stroke: svg?.firstElementChild
 					? window.getComputedStyle( svg.firstElementChild ).stroke
 					: null,
@@ -52,6 +74,13 @@ async function measure( frame, selector ) {
 }
 function assertLayers( measurements, label ) {
 	for ( const item of measurements ) {
+		check(
+			item.edgeGaps.length === 4 &&
+				item.edgeGaps.every( ( gap ) => Math.abs( gap ) < 1.1 ),
+			`${ label }: 線の外縁がブロックの境界から離れている ${ JSON.stringify(
+				item.edgeGaps
+			) }`
+		);
 		check(
 			item.stroke &&
 				! [ 'none', 'transparent', 'rgba(0, 0, 0, 0)' ].includes(
@@ -94,14 +123,12 @@ function assertLayers( measurements, label ) {
 				viewport: { width: 1400, height: 1100 },
 			} );
 			// このテストで使わないパターン一覧を固定し、外部通信の中断を避ける。
-			await page.route(
-				/\/wp-json\/wp\/v2\/wp_pattern_category\?/,
-				( route ) =>
-					route.fulfill( {
-						status: 200,
-						contentType: 'application/json',
-						body: '[]',
-					} )
+			await page.route( '**/*wp_pattern_category*', ( route ) =>
+				route.fulfill( {
+					status: 200,
+					contentType: 'application/json',
+					body: '[]',
+				} )
 			);
 			const errors = [];
 			page.on( 'pageerror', ( error ) => errors.push( error.message ) );
@@ -146,7 +173,16 @@ function assertLayers( measurements, label ) {
 							linkText: '詳しく読む',
 							rel: 'nofollow',
 						},
-						{ tagName: 'section' },
+						{
+							tagName: 'section',
+							style: {
+								border: {
+									width: '4px',
+									style: 'solid',
+									color: '#315f57',
+								},
+							},
+						},
 					].map( ( extra ) =>
 						wp.blocks.createBlock(
 							targetBlockName,
@@ -302,6 +338,83 @@ function assertLayers( measurements, label ) {
 			await editor
 				.locator( `#block-${ ids[ 0 ] }` )
 				.screenshot( { path: `${ output }/${ name }-editor.png` } );
+			const variants = [];
+			for ( const pattern of [
+				'natural',
+				'rough',
+				'rounded',
+				'sketch',
+				'wavy',
+			] ) {
+				for ( const lineWidth of [ 1, 2, 8 ] ) {
+					await page.evaluate(
+						( settings ) =>
+							wp.data
+								.dispatch( 'core/block-editor' )
+								.updateBlockAttributes( settings.id, {
+									odHdbPattern: settings.pattern,
+									odHdbWidth: settings.lineWidth,
+								} ),
+						{ id: ids[ 0 ], pattern, lineWidth }
+					);
+					await editor.waitForFunction(
+						( settings ) => {
+							const path = document
+								.getElementById( `block-${ settings.id }` )
+								?.querySelector( ':scope > svg > path' );
+							return (
+								path &&
+								parseFloat(
+									window.getComputedStyle( path ).strokeWidth
+								) === settings.lineWidth &&
+								Math.abs(
+									path.getBBox().x - settings.lineWidth / 2
+								) < 0.01
+							);
+						},
+						{ id: ids[ 0 ], lineWidth }
+					);
+					const measurements = await measure( editor, selector );
+					assertLayers(
+						measurements,
+						`${ name } ${ pattern } ${ lineWidth }px`
+					);
+					variants.push( { pattern, lineWidth, measurements } );
+				}
+			}
+			await page.evaluate(
+				( id ) =>
+					wp.data
+						.dispatch( 'core/block-editor' )
+						.updateBlockAttributes( id, {
+							odHdbPattern: 'natural',
+							odHdbWidth: null,
+						} ),
+				ids[ 0 ]
+			);
+			await editor.waitForFunction( ( id ) => {
+				const path = document
+					.getElementById( `block-${ id }` )
+					?.querySelector( ':scope > svg > path' );
+				return (
+					path &&
+					parseFloat(
+						window.getComputedStyle( path ).strokeWidth
+					) === 2
+				);
+			}, ids[ 0 ] );
+			const selected = editor.locator( `#block-${ ids[ 0 ] }` );
+			await selected.scrollIntoViewIfNeeded();
+			const selectedBox = await selected.boundingBox();
+			await page.screenshot( {
+				path: `${ output }/${ name }-boundary-editor.png`,
+				clip: {
+					x: selectedBox.x - 4,
+					y: selectedBox.y - 4,
+					width: selectedBox.width + 8,
+					height: selectedBox.height + 8,
+				},
+			} );
 			const postId = await page.evaluate( async () => {
 				await wp.data.dispatch( 'core/editor' ).savePost();
 				return wp.data.select( 'core/editor' ).getCurrentPostId();
@@ -384,7 +497,14 @@ function assertLayers( measurements, label ) {
 				`${ name } CSS 欠落`
 			);
 			check( errors.length === 0, errors.join( '; ' ) );
-			results.push( { browser: name, before, after, frontend, errors } );
+			results.push( {
+				browser: name,
+				before,
+				after,
+				frontend,
+				variants,
+				errors,
+			} );
 		} catch ( error ) {
 			await page?.screenshot( {
 				path: `${ output }/${ name }-failure.png`,

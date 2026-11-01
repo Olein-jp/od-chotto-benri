@@ -16,33 +16,53 @@ const sizes = [
 	[ 120, 800 ],
 ];
 for ( const pattern of Object.keys( patterns ) ) {
-	test.each( sizes )(
-		`${ pattern }: %i × %i は再現可能で描画範囲内`,
-		( width, height ) => {
-			const options = {
-				width,
-				height,
-				pattern,
-				seed: 'fixed',
-				roughness: 1.5,
-			};
-			const result = generateBorder( options );
-			expect( result ).toEqual( generateBorder( options ) );
-			expect( result.paths ).toHaveLength( pattern === 'sketch' ? 2 : 1 );
-			for ( const path of result.paths ) {
-				expect( path.d ).not.toMatch( /NaN|Infinity/ );
-				const coordinates = path.d
+	for ( const strokeWidth of [ 1, 2, 8 ] ) {
+		test.each( sizes )(
+			`${ pattern } / ${ strokeWidth }px: %i × %i は外周に沿い線が欠けない`,
+			( width, height ) => {
+				const options = {
+					width,
+					height,
+					pattern,
+					seed: 'fixed',
+					roughness: 1.5,
+					strokeWidth,
+				};
+				const result = generateBorder( options );
+				expect( result ).toEqual( generateBorder( options ) );
+				expect( result.paths ).toHaveLength(
+					pattern === 'sketch' ? 2 : 1
+				);
+				const primary = result.paths[ 0 ].d
 					.match( /-?\d+(?:\.\d+)?/g )
 					.map( Number );
-				coordinates.forEach( ( value, index ) => {
-					expect( value ).toBeGreaterThanOrEqual( 0 );
-					expect( value ).toBeLessThanOrEqual(
-						index % 2 ? height : width
-					);
-				} );
+				const xs = primary.filter(
+					( value, index ) => index % 2 === 0
+				);
+				const ys = primary.filter(
+					( value, index ) => index % 2 !== 0
+				);
+				expect( Math.min( ...xs ) ).toBe( strokeWidth / 2 );
+				expect( Math.max( ...xs ) ).toBe( width - strokeWidth / 2 );
+				expect( Math.min( ...ys ) ).toBe( strokeWidth / 2 );
+				expect( Math.max( ...ys ) ).toBe( height - strokeWidth / 2 );
+				for ( const path of result.paths ) {
+					expect( path.d ).not.toMatch( /NaN|Infinity/ );
+					const coordinates = path.d
+						.match( /-?\d+(?:\.\d+)?/g )
+						.map( Number );
+					coordinates.forEach( ( value, index ) => {
+						expect( value ).toBeGreaterThanOrEqual(
+							strokeWidth / 2
+						);
+						expect( value ).toBeLessThanOrEqual(
+							( index % 2 ? height : width ) - strokeWidth / 2
+						);
+					} );
+				}
 			}
-		}
-	);
+		);
+	}
 }
 test( 'シードと揺らぎが形状を変え、乱数列を再現する', () => {
 	const a = seededRandom( 'same' ),
@@ -166,10 +186,16 @@ test( '50 要素を描画し、色変更ではパスを維持し、監視と装�
 	renderers[ 0 ].update( {
 		odHdbSeed: 'same',
 		odHdbColor: '#fff',
-		odHdbWidth: 8,
 	} );
 	flush();
 	expect( targets[ 0 ].querySelector( 'svg' ) ).toBe( svg );
+	renderers[ 0 ].update( {
+		odHdbSeed: 'same',
+		odHdbColor: '#fff',
+		odHdbWidth: 8,
+	} );
+	flush();
+	expect( targets[ 0 ].querySelector( 'svg' ) ).not.toBe( svg );
 	expect( targets[ 0 ].style.getPropertyValue( '--od-hdb-width' ) ).toBe(
 		'8px'
 	);

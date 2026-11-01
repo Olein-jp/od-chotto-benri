@@ -1,0 +1,23 @@
+[
+  {
+    "browser": "chromium",
+    "themePreset": "unitone-accent",
+    "customPreset": "od-hdb-user",
+    "stroke": "rgb(26, 127, 96)",
+    "errors": []
+  },
+  {
+    "browser": "firefox",
+    "themePreset": "unitone-accent",
+    "customPreset": "od-hdb-user",
+    "stroke": "rgb(26, 127, 96)",
+    "errors": []
+  },
+  {
+    "browser": "webkit",
+    "themePreset": "unitone-accent",
+    "customPreset": "od-hdb-user",
+    "stroke": "rgb(26, 127, 96)",
+    "errors": []
+  }
+]

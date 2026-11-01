@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       OD Chotto Benri
  * Description:       A collection of small features that make WordPress a little more convenient.
- * Version:           0.4.1
+ * Version:           0.4.2
  * Requires at least: 6.5
  * Tested up to:      7.1
  * Requires PHP:      7.4
@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'OD_CHOTTO_BENRI_VERSION', '0.4.1' );
+define( 'OD_CHOTTO_BENRI_VERSION', '0.4.2' );
 define( 'OD_CHOTTO_BENRI_FILE', __FILE__ );
 define( 'OD_CHOTTO_BENRI_PATH', plugin_dir_path( __FILE__ ) );
 define( 'OD_CHOTTO_BENRI_URL', plugin_dir_url( __FILE__ ) );

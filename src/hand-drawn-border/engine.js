@@ -29,6 +29,7 @@ export function generateBorder( {
 	pattern = 'natural',
 	seed = 'default',
 	roughness = 1,
+	strokeWidth = 2,
 } ) {
 	if (
 		! Number.isFinite( width ) ||
@@ -43,8 +44,14 @@ export function generateBorder( {
 		: 'natural';
 	const preset = patterns[ id ];
 	const strength = [ 0.5, 1, 1.5 ].includes( roughness ) ? roughness : 1;
+	// 通常の CSS ボーダーと同じく、線の外縁をボックスの外周に合わせる。
+	const lineWidth =
+		Number.isFinite( strokeWidth ) && strokeWidth > 0 ? strokeWidth : 2;
+	if ( lineWidth > Math.min( width, height ) / 2 ) {
+		return { paths: [] };
+	}
 	const random = seededRandom( seed );
-	const inset = Math.min( 10, width / 4, height / 4 );
+	const inset = lineWidth / 2;
 	const radius = Math.min(
 		preset.radius,
 		( width - 2 * inset ) / 4,
@@ -54,7 +61,10 @@ export function generateBorder( {
 	const right = width - inset;
 	const top = inset;
 	const bottom = height - inset;
-	const amplitude = Math.min( preset.amplitude * strength, inset - 4 );
+	const amplitude = Math.min(
+		preset.amplitude * strength,
+		( Math.min( width, height ) - 2 * inset ) / 8
+	);
 	const f = ( n ) => Number( n.toFixed( 3 ) );
 	const makePath = ( offset = 0 ) => {
 		const l = left + offset,
@@ -78,10 +88,10 @@ export function generateBorder( {
 					z = ( i + 1 ) / count;
 				const jitter =
 					id === 'wavy'
-						? ( i % 2 ? -1 : 1 ) *
+						? ( i % 2 ? 0.15 : 1 ) *
 						  amplitude *
 						  ( 0.8 + random() * 0.4 )
-						: ( random() * 2 - 1 ) * amplitude;
+						: random() * amplitude;
 				const nx = ( -dy / length ) * jitter,
 					ny = ( dx / length ) * jitter;
 				d += ` C ${ f( x1 + dx * ( a + ( z - a ) / 3 ) + nx ) } ${ f(
@@ -103,7 +113,16 @@ export function generateBorder( {
 	};
 	const paths = [ { d: makePath(), opacity: 1 } ];
 	if ( id === 'sketch' ) {
-		paths.push( { d: makePath( 1.7 ), opacity: 0.45 } );
+		paths.push( {
+			d: makePath(
+				Math.min(
+					1.7,
+					( width - 2 * inset ) / 8,
+					( height - 2 * inset ) / 8
+				)
+			),
+			opacity: 0.45,
+		} );
 	}
 	return { paths };
 }

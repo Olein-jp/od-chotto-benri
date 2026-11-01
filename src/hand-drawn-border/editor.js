@@ -12,6 +12,7 @@ import { addFilter } from '@wordpress/hooks';
 import { __ } from '@wordpress/i18n';
 import { generateBorder, patterns } from './engine';
 import { mountBorder, resolveTarget } from './renderer';
+import { createColorPalettes, findPalettePreset } from './palette';
 
 const config = window.odHdb || { blocks: [], attributes: {} };
 
@@ -28,10 +29,29 @@ function newSeed() {
 	return Array.from( values, ( value ) => value.toString( 36 ) ).join( '-' );
 }
 function Controls( { attributes, setAttributes } ) {
-	const [ palette = [], customColor = true ] = useSettings(
-		'color.palette',
-		'color.custom'
-	);
+	const [ theme, custom, defaults, showDefault, customColor = true, legacy ] =
+		useSettings(
+			'color.palette.theme',
+			'color.palette.custom',
+			'color.palette.default',
+			'color.defaultPalette',
+			'color.custom',
+			'color.palette'
+		);
+	const paletteNames = {
+		theme: __( 'Theme colors', 'od-chotto-benri' ),
+		custom: __( 'Custom colors', 'od-chotto-benri' ),
+		default: __( 'Default colors', 'od-chotto-benri' ),
+		legacy: __( 'Colors', 'od-chotto-benri' ),
+	};
+	const palettes = createColorPalettes( {
+		theme,
+		custom,
+		defaults,
+		showDefault,
+		legacy,
+	} ).map( ( group ) => ( { ...group, name: paletteNames[ group.slug ] } ) );
+	const palette = palettes.flatMap( ( group ) => group.colors );
 	const current = attributes.odHdbColor;
 	const selected = current?.startsWith( 'var:preset|color|' )
 		? palette.find( ( entry ) => entry.slug === current.split( '|' )[ 2 ] )
@@ -114,15 +134,18 @@ function Controls( { attributes, setAttributes } ) {
 							) }
 						</p>
 						<ColorPalette
-							colors={ palette }
+							colors={ palettes }
 							disableCustomColors={ ! customColor }
 							value={ selected }
-							onChange={ ( color ) => {
-								const preset = palette.find(
-									( entry ) => entry.color === color
+							onChange={ ( color, index, slug ) => {
+								const preset = findPalettePreset(
+									palettes,
+									color,
+									index,
+									slug
 								);
 								setAttributes( {
-									odHdbColor: preset
+									odHdbColor: preset?.slug
 										? `var:preset|color|${ preset.slug }`
 										: color || null,
 								} );

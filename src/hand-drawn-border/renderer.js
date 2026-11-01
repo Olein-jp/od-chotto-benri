@@ -64,12 +64,39 @@ export function mountBorder( target, initial, onReady = () => {} ) {
 			const style = resolveStyle( attrs, base );
 			target.style.setProperty( '--od-hdb-color', style.color );
 			target.style.setProperty( '--od-hdb-width', `${ style.width }px` );
-			// absolute 要素の包含ブロックに合わせ、transform の影響を受けない寸法を使う。
-			const width = target.clientWidth,
-				height = target.clientHeight;
+			// 透明化した標準ボーダーも含め、選択枠と同じ外周の寸法を使う。
+			const left = parseFloat( current.borderLeftWidth ) || 0;
+			const right = parseFloat( current.borderRightWidth ) || 0;
+			const top = parseFloat( current.borderTopWidth ) || 0;
+			const bottom = parseFloat( current.borderBottomWidth ) || 0;
+			const usedWidth = parseFloat( current.width );
+			const usedHeight = parseFloat( current.height );
+			const extraWidth =
+				current.boxSizing === 'border-box'
+					? 0
+					: left +
+					  right +
+					  ( parseFloat( current.paddingLeft ) || 0 ) +
+					  ( parseFloat( current.paddingRight ) || 0 );
+			const extraHeight =
+				current.boxSizing === 'border-box'
+					? 0
+					: top +
+					  bottom +
+					  ( parseFloat( current.paddingTop ) || 0 ) +
+					  ( parseFloat( current.paddingBottom ) || 0 );
+			const width = Number.isFinite( usedWidth )
+				? usedWidth + extraWidth
+				: target.clientWidth + left + right;
+			const height = Number.isFinite( usedHeight )
+				? usedHeight + extraHeight
+				: target.clientHeight + top + bottom;
 			const key = JSON.stringify( [
 				width,
 				height,
+				left,
+				top,
+				style.width,
 				attrs.odHdbPattern,
 				attrs.odHdbSeed,
 				attrs.odHdbRoughness,
@@ -83,6 +110,7 @@ export function mountBorder( target, initial, onReady = () => {} ) {
 				pattern: attrs.odHdbPattern,
 				seed: attrs.odHdbSeed || 'default',
 				roughness: attrs.odHdbRoughness,
+				strokeWidth: style.width,
 			} );
 			if ( ! result.paths.length ) {
 				svg?.remove();
@@ -98,8 +126,7 @@ export function mountBorder( target, initial, onReady = () => {} ) {
 			);
 			next.setAttribute( 'class', 'od-hdb-border' );
 			// グループの子要素用 gap・幅制限から装飾レイヤーを分離する。
-			next.style.cssText =
-				'position:absolute;inset:0;width:100%;height:100%;padding:0;border:0;box-sizing:border-box;pointer-events:none;overflow:hidden;max-height:none;';
+			next.style.cssText = `position:absolute;inset:auto;left:${ -left }px;top:${ -top }px;width:${ width }px;height:${ height }px;padding:0;border:0;box-sizing:border-box;pointer-events:none;overflow:hidden;max-height:none;`;
 			next.style.setProperty( 'margin', '0', 'important' );
 			next.style.setProperty( 'max-width', 'none', 'important' );
 			next.setAttribute( 'aria-hidden', 'true' );

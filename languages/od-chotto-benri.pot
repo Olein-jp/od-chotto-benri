@@ -199,3 +199,15 @@ msgstr ""
 
 msgid "Dedicated settings override standard borders, then theme styles, then 2px/currentColor. Different edges use the top edge as a representative value."
 msgstr ""
+
+msgid "Theme colors"
+msgstr ""
+
+msgid "Custom colors"
+msgstr ""
+
+msgid "Default colors"
+msgstr ""
+
+msgid "Colors"
+msgstr ""

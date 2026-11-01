@@ -204,3 +204,15 @@ msgstr "パターンを再生成"
 
 msgid "Dedicated settings override standard borders, then theme styles, then 2px/currentColor. Different edges use the top edge as a representative value."
 msgstr "専用設定、標準ボーダー、テーマの順に継承し、未設定時は 2px・文字色を使用します。四辺で異なる設定は上辺を代表値にします。"
+
+msgid "Theme colors"
+msgstr "テーマの色"
+
+msgid "Custom colors"
+msgstr "カスタムの色"
+
+msgid "Default colors"
+msgstr "標準の色"
+
+msgid "Colors"
+msgstr "色"

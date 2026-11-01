@@ -60,6 +60,18 @@
 			],
 			"Dedicated settings override standard borders, then theme styles, then 2px/currentColor. Different edges use the top edge as a representative value.": [
 				"専用設定、標準ボーダー、テーマの順に継承し、未設定時は 2px・文字色を使用します。四辺で異なる設定は上辺を代表値にします。"
+			],
+			"Theme colors": [
+				"テーマの色"
+			],
+			"Custom colors": [
+				"カスタムの色"
+			],
+			"Default colors": [
+				"標準の色"
+			],
+			"Colors": [
+				"色"
 			]
 		}
 	}
