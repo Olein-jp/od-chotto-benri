@@ -1,6 +1,6 @@
 {
 	"name": "od-chotto-benri",
-	"version": "0.4.0",
+	"version": "0.4.1",
 	"private": true,
 	"description": "OD ちょっと便利のローカル開発環境",
 	"license": "GPL-2.0-or-later",
@@ -16,7 +16,9 @@
 		"lint:php": "composer lint",
 		"start": "wp-scripts start",
 		"test:unit": "wp-scripts test-unit-js",
-		"test:e2e:hdb": "node tests/e2e/hand-drawn-border.cjs"
+		"test:e2e:hdb": "node tests/e2e/hand-drawn-border.cjs",
+		"test:e2e:hdb:group": "node tests/e2e/hand-drawn-border-group.cjs",
+		"test:e2e:hdb:unitone": "node tests/e2e/hand-drawn-border-group.cjs unitone/decorator"
 	},
 	"devDependencies": {
 		"@playwright/test": "^1.63.0",

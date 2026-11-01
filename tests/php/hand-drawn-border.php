@@ -17,7 +17,7 @@ $od_hdb_check   = static function ( $condition, $message ) use ( &$od_hdb_count 
 	}
 	++$od_hdb_count;
 };
-$od_hdb_check( array( 'core/group', 'core/columns', 'core/column' ) === $od_hdb_feature->supported_blocks(), '標準ブロック' );
+$od_hdb_check( array( 'core/group', 'core/columns', 'core/column', 'unitone/decorator' ) === $od_hdb_feature->supported_blocks(), '標準ブロック' );
 foreach ( array(
 	array( 'my-plugin/card', 'my-plugin/box', 'my-plugin/card', null, 1, 'invalid', 'UPPER/name' ),
 	array(),
@@ -41,8 +41,11 @@ foreach ( array(
 }
 foreach ( $od_hdb_feature->supported_blocks() as $od_hdb_name ) {
 	$od_hdb_type = WP_Block_Type_Registry::get_instance()->get_registered( $od_hdb_name );
-	$od_hdb_check( isset( $od_hdb_type->attributes['odHdbEnabled'] ), '初期化がコア登録より早い' );
+	if ( null !== $od_hdb_type ) {
+		$od_hdb_check( isset( $od_hdb_type->attributes['odHdbEnabled'] ), '登録済み対応ブロックの属性' );
+	}
 }
+$od_hdb_check( isset( $od_hdb_feature->register_attributes( array(), 'unitone/decorator' )['attributes']['odHdbEnabled'] ), 'unitone の属性定義' );
 $od_hdb_attrs = array(
 	'odHdbEnabled' => true,
 	'odHdbPattern' => 'sketch',
@@ -65,6 +68,20 @@ $od_hdb_check( false === strpos( $od_hdb_out, '<svg' ), 'SVG は保存しない'
 $od_hdb_source = '<!-- wp:group ' . wp_json_encode( $od_hdb_attrs ) . ' -->' . $od_hdb_html . '<!-- /wp:group -->';
 $od_hdb_parsed = parse_blocks( serialize_blocks( parse_blocks( $od_hdb_source ) ) );
 $od_hdb_check( $od_hdb_attrs === $od_hdb_parsed[0]['attrs'], '保存・再読込・複製用の属性保持' );
+foreach ( array(
+	'<div data-unitone-layout="decorator"><h2>見出し</h2><p>本文</p></div>',
+	'<div data-unitone-layout="decorator -has-link"><div data-unitone-layout="decorator__inner"><div><p>本文</p></div><a href="https://example.com/">リンク</a></div></div>',
+	'<section data-unitone-layout="decorator"><p>本文</p></section>',
+) as $od_hdb_decorator_html ) {
+	$od_hdb_decorator_out = $od_hdb_feature->render(
+		$od_hdb_decorator_html,
+		array(
+			'blockName' => 'unitone/decorator',
+			'attrs'     => $od_hdb_attrs,
+		)
+	);
+	$od_hdb_check( false !== strpos( $od_hdb_decorator_out, 'data-od-hdb=' ) && false !== strpos( $od_hdb_decorator_out, '<p>本文</p>' ), 'unitone のルート装飾と本文保持' );
+}
 $od_hdb_block['attrs']['odHdbEnabled'] = false;
 $od_hdb_check( $od_hdb_html === $od_hdb_feature->render( $od_hdb_html, $od_hdb_block ), 'ブロック OFF' );
 $od_hdb_block['attrs']['odHdbEnabled'] = true;

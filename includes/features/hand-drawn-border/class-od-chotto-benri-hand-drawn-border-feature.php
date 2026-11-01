@@ -73,7 +73,7 @@ final class OD_Chotto_Benri_Hand_Drawn_Border_Feature {
 	public function supported_blocks() {
 		if ( null === $this->blocks ) {
 			/** 対応ブロック名の配列を変更する。init の優先度 0 より前に登録すること。 */
-			$blocks       = apply_filters( 'od_hdb_supported_blocks', array( 'core/group', 'core/columns', 'core/column' ) );
+			$blocks       = apply_filters( 'od_hdb_supported_blocks', array( 'core/group', 'core/columns', 'core/column', 'unitone/decorator' ) );
 			$this->blocks = is_array( $blocks ) ? array_values(
 				array_unique(
 					array_filter(

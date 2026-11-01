@@ -102,6 +102,24 @@ test( 'テーマ色、明示値、標準値、CSS、既定値を解決する', (
 	expect( safeColor( '<svg onload=evil>' ) ).toBeNull();
 } );
 
+test( 'unitone の透明な標準ボーダー色は文字色へ戻すが明示的な透明色は保持する', () => {
+	const computed = {
+		borderTopColor: 'rgba(0, 0, 0, 0)',
+		borderTopWidth: '0px',
+	};
+	expect( resolveStyle( {}, computed ) ).toEqual( {
+		color: 'currentColor',
+		width: 2,
+	} );
+	expect(
+		resolveStyle( { odHdbColor: 'transparent' }, computed ).color
+	).toBe( 'transparent' );
+	expect(
+		resolveStyle( { style: { border: { color: '#123456' } } }, computed )
+			.color
+	).toBe( '#123456' );
+} );
+
 test( '50 要素を描画し、色変更ではパスを維持し、監視と装飾を破棄する', () => {
 	const callbacks = new Map();
 	let id = 0;
@@ -127,6 +145,7 @@ test( '50 要素を描画し、色変更ではパスを維持し、監視と装�
 			clientHeight: { value: 200 },
 		} );
 		target.style.border = '3px solid red';
+		target.style.position = 'static';
 		document.body.appendChild( target );
 		return target;
 	} );
@@ -137,6 +156,13 @@ test( '50 要素を描画し、色変更ではパスを維持し、監視と装�
 	expect( document.querySelectorAll( '.od-hdb-border' ) ).toHaveLength( 50 );
 	expect( window.ResizeObserver ).toHaveBeenCalledTimes( 50 );
 	const svg = targets[ 0 ].querySelector( 'svg' );
+	// スタイルシートがなくても、装飾を段落の次の要素として並べない。
+	expect( svg.style.position ).toBe( 'absolute' );
+	expect( targets[ 0 ].style.position ).toBe( 'relative' );
+	expect( svg.style.margin ).toBe( '0px' );
+	expect( svg.style.getPropertyPriority( 'margin' ) ).toBe( 'important' );
+	expect( svg.style.maxWidth ).toBe( 'none' );
+	expect( svg.querySelector( 'path' ).getAttribute( 'fill' ) ).toBe( 'none' );
 	renderers[ 0 ].update( {
 		odHdbSeed: 'same',
 		odHdbColor: '#fff',
@@ -154,5 +180,6 @@ test( '50 要素を描画し、色変更ではパスを維持し、監視と装�
 	expect( document.querySelectorAll( '.od-hdb-border' ) ).toHaveLength( 0 );
 	expect( targets[ 0 ].classList.contains( 'od-hdb-ready' ) ).toBe( false );
 	expect( targets[ 0 ].style.border ).toBe( '3px solid red' );
+	expect( targets[ 0 ].style.position ).toBe( 'static' );
 	targets.forEach( ( target ) => target.remove() );
 } );

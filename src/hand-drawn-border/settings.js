@@ -29,6 +29,12 @@ export function resolveStyle( attrs, computed ) {
 			? parseFloat( standard )
 			: 0;
 	const inheritedWidth = parseFloat( computed.borderTopWidth );
+	// unitone などの透明な標準ボーダー色を、未指定の線色として継承しない。
+	const inheritedColor = [ 'transparent', 'rgba(0, 0, 0, 0)' ].includes(
+		computed.borderTopColor
+	)
+		? null
+		: computed.borderTopColor;
 	const color =
 		safeColor( attrs.odHdbColor ) ||
 		safeColor( border.color ?? border.top?.color ) ||
@@ -36,7 +42,7 @@ export function resolveStyle( attrs, computed ) {
 		/^[a-z0-9-]+$/.test( attrs.borderColor )
 			? `var(--wp--preset--color--${ attrs.borderColor })`
 			: null ) ||
-		computed.borderTopColor ||
+		inheritedColor ||
 		'currentColor';
 	let width = 2;
 	if ( inheritedWidth > 0 ) {

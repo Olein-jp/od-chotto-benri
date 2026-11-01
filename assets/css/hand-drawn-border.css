@@ -12,9 +12,15 @@
 .od-hdb-enabled.od-hdb-ready {
 	border-color: transparent !important;
 }
-.od-hdb-border {
+.od-hdb-enabled > .od-hdb-border {
 	position: absolute;
 	inset: 0;
+	margin: 0 !important;
+	padding: 0;
+	border: 0;
+	max-width: none !important;
+	max-height: none;
+	box-sizing: border-box;
 	width: 100%;
 	height: 100%;
 	display: block;

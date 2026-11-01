@@ -23,7 +23,7 @@ export function mountBorder( target, initial, onReady = () => {} ) {
 		frame,
 		lastKey;
 	const original = new Map(
-		[ '--od-hdb-color', '--od-hdb-width' ].map( ( key ) => [
+		[ '--od-hdb-color', '--od-hdb-width', 'position' ].map( ( key ) => [
 			key,
 			[
 				target.style.getPropertyValue( key ),
@@ -46,6 +46,8 @@ export function mountBorder( target, initial, onReady = () => {} ) {
 	target.classList.toggle( 'od-hdb-has-border', hasBorder );
 	if ( positioned ) {
 		target.classList.add( 'od-hdb-positioned' );
+		// 配置に必須の指定は CSS の遅延・欠落時にも維持する。
+		target.style.setProperty( 'position', 'relative' );
 	}
 	const draw = () => {
 		frame = null;
@@ -95,6 +97,11 @@ export function mountBorder( target, initial, onReady = () => {} ) {
 				'svg'
 			);
 			next.setAttribute( 'class', 'od-hdb-border' );
+			// グループの子要素用 gap・幅制限から装飾レイヤーを分離する。
+			next.style.cssText =
+				'position:absolute;inset:0;width:100%;height:100%;padding:0;border:0;box-sizing:border-box;pointer-events:none;overflow:hidden;max-height:none;';
+			next.style.setProperty( 'margin', '0', 'important' );
+			next.style.setProperty( 'max-width', 'none', 'important' );
 			next.setAttribute( 'aria-hidden', 'true' );
 			next.setAttribute( 'focusable', 'false' );
 			next.setAttribute( 'viewBox', `0 0 ${ width } ${ height }` );
@@ -104,6 +111,18 @@ export function mountBorder( target, initial, onReady = () => {} ) {
 					'path'
 				);
 				element.setAttribute( 'd', path.d );
+				element.setAttribute( 'fill', 'none' );
+				element.setAttribute(
+					'stroke',
+					'var(--od-hdb-color, currentColor)'
+				);
+				element.setAttribute(
+					'stroke-width',
+					'var(--od-hdb-width, 2px)'
+				);
+				element.setAttribute( 'stroke-linecap', 'round' );
+				element.setAttribute( 'stroke-linejoin', 'round' );
+				element.setAttribute( 'vector-effect', 'non-scaling-stroke' );
 				element.setAttribute( 'opacity', path.opacity );
 				next.appendChild( element );
 			}

@@ -186,7 +186,9 @@ const check = ( value, message ) => {
 					.updateBlockAttributes( clientId, { odHdbEnabled: false } ),
 			reloadedId
 		);
-		await page.waitForTimeout( 100 );
+		await reloadedFrame
+			.locator( `#block-${ reloadedId } > svg` )
+			.waitFor( { state: 'detached' } );
 		check(
 			( await reloadedFrame
 				.locator( `#block-${ reloadedId } > svg` )

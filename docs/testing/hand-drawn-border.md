@@ -7,7 +7,7 @@
 既存の機能レジストリに `hand-drawn-border` を登録した。
 「設定 → OD Chotto Benri」に「手書き風ボーダー」の ON/OFF が自動追加される。
 既存方針に従い機能全体は初期 ON、各ブロックの装飾は初期 OFF とする。
-対応するグループ、カラム、個別カラムのインスペクターで以下を設定できる。
+対応するグループ、カラム、個別カラム、unitone デコレーターのインスペクターで以下を設定できる。
 
 - 5 パターンの名前と SVG プレビュー。
 - 色（テーマプリセット・カスタム色・継承）。カスタム色の許可はテーマ設定を参照する。
@@ -77,7 +77,7 @@ JavaScript 無効・エラー・極小サイズでは標準ボーダーまたは
 
 ## 公開フック
 
-`od_hdb_supported_blocks` の既定値は `core/group`、`core/columns`、`core/column`。
+`od_hdb_supported_blocks` の既定値は `core/group`、`core/columns`、`core/column`、`unitone/decorator`。
 ブロック名形式を検証し、重複・不正値を除外する。空配列・非配列は全ブロック非対応とする。
 未登録名でも致命的エラーを起こさない。
 
@@ -122,3 +122,76 @@ Firefox / WebKit のヒープ値は取得していない。
 - プラグインそのものの無効化は投稿を改変しないが、無効中の再保存で未知の属性が保持される保証はない。
 - 将来は画像差分の継続テスト、対応最小バージョンの CI、四辺個別設定、特殊ラッパーの描画先指定、
   公開 DOM の追加対応を検討できる。
+
+## 0.4.0 公開後のグループ表示不具合の修正
+
+見出し・段落を入れたグループを改めて検証したところ、WordPress の子ブロック間余白が SVG にも適用され、
+編集画面・公開画面の両方で SVG が約 19.2px 下へずれることを確認した。
+従来のテストは SVG の存在とパスを中心に確認しており、グループと SVG の座標の比較が不足していた。
+
+装飾レイヤーの margin と最大幅をリセットし、子ブロック用の余白・幅制限が適用されないようにした。
+SVG の絶対配置とパスの基本属性を描画時にも指定し、スタイルシートの欠落・遅延時でも
+段落の後に通常の要素として SVG が並ばないようにした。位置が static のグループだけ relative を設定し、
+解除時には元のインライン position を復元する。
+
+追加した `tests/e2e/hand-drawn-border-group.cjs` では、次の 4 構成を Chromium・Firefox・WebKit で検証した。
+
+- 幅制限付きグループ内の見出しと段落 2 つ。
+- 通常のグループ内の見出しと段落 2 つ。
+- 横並びグループ内の見出しと段落 2 つ。
+- グループ内に段落 1 つだけを入れた構成。
+
+最初のグループはインスペクターの有効化スイッチを実際に操作する。
+有効化前後で本文とグループの寸法が変わらず、SVG の原点と寸法がグループと一致することを確認した。
+公開画面、幅を 1100px に変更した場合、専用 CSS を取り除いた場合も、SVG がグループ内に絶対配置されることを確認した。
+実測値は `hand-drawn-border-group-results.json`、公開側の確認画像は `hand-drawn-border-group-frontend.png` に保存した。
+
+```sh
+OD_HDB_URL=http://localhost:8888 npm run test:e2e:hdb:group
+```
+
+ユーザー環境のスタイルシート欠落そのものは未確認であり、今回実証したのは検証環境の余白干渉と
+CSS 欠落を意図的に再現した場合の修正後の挙動である。
+
+
+## unitone デコレーター対応
+
+標準対応一覧に `unitone/decorator` を追加した。unitone が存在しないサイトでは未登録名として扱われ、
+追加の読み込みや依存は発生しない。対応一覧は従来どおり PHP から JavaScript に共有する。
+
+unitone の標準 border-color が透明な場合に、専用色が未指定でも SVG の線まで透明になる問題を確認した。
+透明な計算済み border-color を既定の線色として継承せず、currentColor に戻すよう修正した。
+専用設定または標準ボーダー属性で明示した透明色は維持する。
+
+公式ソースのタグ `28.9.4`（コミット `57b6fae8241a8c36fc862d0bf49dc4155312784a`）を
+ビルドした unitone を検証専用 WordPress 7.1.4 で有効化して検証した。
+参照した一次情報は [デコレーターのメタデータ](https://github.com/inc2734/unitone/blob/28.9.4/src/blocks/decorator/block.json)、
+[保存処理](https://github.com/inc2734/unitone/blob/28.9.4/src/blocks/decorator/save.js)、
+[編集処理](https://github.com/inc2734/unitone/blob/28.9.4/src/blocks/decorator/edit.js)。
+unitone 自体のコードはこのプラグインへ取り込んでいない。
+
+検証内容：
+
+- Chromium・Firefox・WebKit で通常、リンク付き、section 要素のデコレーターを確認。
+- 見出しと段落を含むデコレーターを、実際の設定 UI で有効化。
+- 本文・コンテナーの寸法を変えず、装飾 SVG の原点と寸法が一致することを確認。
+- 保存と再編集で専用属性と有効状態が復元され、ブロック検証エラーが発生しないことを確認。
+- 公開側でデコレーター本体に SVG が付き、ブロック全体のリンクと section 要素の指定を維持。
+- 幅変更、CSS 欠落を模した状態でも配置を維持し、線色が透明ではないことを確認。
+- サーバー統合テストは unitone 有効時に 38 件通過。
+- JavaScript ユニットテストは、透明色の継承の回帰テストを含め 52 件通過。
+
+画像は `hand-drawn-border-unitone-frontend.png`、測定値は `hand-drawn-border-unitone-results.json` に保存した。
+ブロック全体のリンクを含む全アニメーション・背景・配置設定の組み合わせや、unitone の過去バージョンでの
+網羅的な互換性は未検証。今回確認したのは上記の通常利用構成である。
+
+```sh
+# unitone を有効化した検証サイトで実行する。
+OD_HDB_URL=http://localhost:8888 npm run test:e2e:hdb:unitone
+```
+
+unitone 上で core/group の回帰確認も追加した。WebKit の画面遷移時に、検証で使用しない
+`wp_pattern_category` API のリクエスト中断に起因するアクセス制御エラーを確認したため、
+E2E 内ではこのパターン一覧だけを空の応答に固定している。デコレーターの登録・属性・描画・保存 API は固定していない。
+修正したテスト条件で core/group も 3 ブラウザーすべて通過した。測定結果は
+`hand-drawn-border-core-on-unitone-results.json` に保存した。
